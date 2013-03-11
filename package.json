@@ -1,0 +1,54 @@
+{
+  "name": "docpad-plugin-gdocs",
+  "version": "2.0.6",
+  "description": "From a Google Document into a Docpad doc",
+  "homepage": "https://github.com/mikeumus/docpad-plugin-gdocs",
+  "keywords": [
+    "docpad",
+    "docpad-plugin",
+    "google-docs",
+    "document"
+  ],
+  "author": {
+    "name": "MDM Inc",
+    "email": "sales@mdm.cc",
+    "url": "http://mdm.cm"
+  },
+  "maintainers": [
+    {
+      "name": "Michael Mooring",
+      "email": "mike@mdm.cm",
+      "url": "http://mdm.cm"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Michael Mooring",
+      "email": "mike@mdm.cm",
+      "url": "http://mdm.cm"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/mikeumus/docpad-plugin-gdocs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikeumus/docpad-plugin-gdocs"
+  },
+  "engines": {
+    "node": "0.8.22",
+    "docpad": "6.25"
+  },
+  "dependencies": {
+    "cheerio": "0.10.7",
+    "request": "2.14.x"
+  },
+  "devDependencies": {
+    "coffee-script": "1.4.x"
+  },
+  "main": "./src/gdocs.plugin.coffee",
+  "readme": "docpad-plugin-gdocs\r\n===================\r\n\r\nFrom a Google Document -into-> a Docpad doc !",
+  "readmeFilename": "README.md",
+  "_id": "docpad-plugin-gdocs@2.0.5",
+  "_from": "docpad-plugin-gdocs@2.0.5"
+}

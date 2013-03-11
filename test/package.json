@@ -1,0 +1,10 @@
+{
+	"name": "docpad-plugin-gdocs-testsite",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"docpad-plugin-eco": "latest",
+		"cheerio": "0.10.x",
+        "request": "2.x"
+	}
+}

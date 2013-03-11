@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>Test Page</title>
+</head>
+<body>
+
+    <section class="gDocs-section">
+
+					<div class="gDoc-new">
+						<h2>New Page</h2>
+
+						<form action="/newGoogleDoc" method="POST">
+							<input type="hidden" name="for" value="<%= @document.id %>" />
+							<input type="text" placeholder="Title" name="title" /> <br/>
+							<input type="url" placeholder="Google Doc URL" name="gDocUrl" /> <br/>
+							<input type="submit" class="btn" value="Publish" />
+						</form>
+					</div>
+
+				</section>
+
+</body>
+</html>
