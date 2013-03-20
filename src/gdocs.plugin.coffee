@@ -16,11 +16,25 @@ module.exports = (BasePlugin) ->
 
 					<div class="gDoc-new">
 						<h2>New Page</h2>
+						<script type="text/javascript" src="tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 
+						<script type="text/javascript">
+						tinyMCE.init({
+						                theme : "advanced",
+								        mode : "textareas",
+								        plugins : "fullpage",
+								        theme_advanced_buttons3_add : "fullpage"
+						});
+						</script>
 						<form action="/newGoogleDoc" method="POST">
 							<input type="hidden" name="for" value="<%= @document.id %>" />
 							<input type="text" placeholder="Title" name="title" /> <br/>
-							<input type="url" placeholder="Google Doc URL" name="gDocUrl" /> <br/>
+							<select name="cat">
+							  <option value="TT">Tubular Tuesdays</option>
+							  <option value="BB">Bitchin’ Blogs</option>
+							  <option value="DA">Dear Abby</option>
+							</select> <br />
+              				<textarea name="content" cols="50" rows="15">This is some content that will be editable with TinyMCE.</textarea>
 							<input type="submit" class="btn" value="Publish" />
 						</form>
 					</div>
@@ -75,12 +89,30 @@ module.exports = (BasePlugin) ->
 			# Publish Handing
 			server.post config.postUrl, (req,res,next) ->
 				# Prepare
+				upload_file = (req, res) ->
+				  req.setBodyEncoding "binary"
+				  stream = new multipart.Stream(req)
+				  stream.addListener "part", (part) ->
+				    part.addListener "body", (chunk) ->
+				      progress = (stream.bytesReceived / stream.bytesTotal * 100).toFixed(2)
+				      mb = (stream.bytesTotal / 1024 / 1024).toFixed(1)
+				      sys.print "Uploading " + mb + "mb (" + progress + "%)\r"
+				  # chunk could be appended to a file if the uploaded file needs to be saved
+				  stream.addListener "complete", ->
+				    res.sendHeader 200,
+				      "Content-Type": "text/plain"
+
+				    res.sendBody "Thanks for playing!"
+				    res.finish()
+				    sys.puts "\n=> Done"
+
 				date = new Date()
 				dateTime = date.getTime()
 				dateString = date.toString()
+				cat = req.body.cat
 				docTitle = req.body.title or "#{dateString}"
 				filename = "#{docTitle}#{config.extension}"
-				fileRelativePath = "#{config.relativePath}/#{filename}"
+				fileRelativePath = "#{config.relativePath}/#{cat}/#{filename}"
 				fileFullPath = docpad.config.documentsPaths[0]+"/#{fileRelativePath}"
 
 				# Extract Url
@@ -88,7 +120,7 @@ module.exports = (BasePlugin) ->
 				docFor = req.body.for or ''
 
 #-----------------------Sam's Slight Alterations 
-				gCons = (gdoc_contents) ->
+				gCons = (gdoc_contents, snip, img) ->
 					console.log "gCons" + gdoc_contents
 					# gDoc data
 					gDocData = """
@@ -97,6 +129,8 @@ module.exports = (BasePlugin) ->
 					url: "#{gDocUri}"
 					layout: "default"
 					date: "#{date.toISOString()}"
+					snip: "#{snip}"
+					imgsrc: "#{img}"
 					---
 					#{gdoc_contents}
 					"""
@@ -155,8 +189,11 @@ module.exports = (BasePlugin) ->
 					  $ = cheerio.load(body)
 					  $body = $(body)
 					 # $contents = $("#contents")
+					  $snip = $("#contents p").first().text().substring(0,30)
+					  $img = $("#contents img").first().attr("src")
+					  console.log($img)
 					  console.log "request" + $body
-					  gCons($body)
+					  gCons($body, $snip, $img)
 
 			# Done
 			@
