@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "cheerio": "0.10.7",
-    "request": "2.14.x"
+    "request": "2.88.x"
   },
   "devDependencies": {
     "coffee-script": "1.4.x"
